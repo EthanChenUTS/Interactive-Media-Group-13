@@ -1,0 +1,26 @@
+import controlP5.*
+int volume;
+int time;
+
+void setup(){
+  size(1000,800,P3D);
+  
+  cp5 = new ControlP5(this);
+  
+  cp5.addSlider("volume")
+    .setLabel("VOLUME")
+    .setRange(0,100)
+    .setPosition(800,80)
+    .setSize(100,25)
+    .setNumberOfTickMarks(100)
+    ;
+    
+   cp5.addKnob("time")
+     .setLabel("TIME")
+     .setRange(0,24)
+     .setPosition(800,150)
+     .setRadius(45)
+     .setNumberOfTickMarks(24)
+     .setTickMarkLength(4)
+     .snapToTickMarks(false)
+}
