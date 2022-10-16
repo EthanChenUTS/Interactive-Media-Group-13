@@ -1,0 +1,79 @@
+//only include people counter in from level 0 and 2
+//to be added to each individual door
+
+
+Table people2Jones;
+Table people2Broadway;
+Table people0West;
+Table people0ST;
+Table people0CR;
+int pplData=0;
+int people$;
+import processing.sound.*;
+
+SoundFile crowd;
+
+void setup (){
+  size (500,500);
+  background (255);
+  
+  //load tables
+  //Jones
+  people2Jones=loadTable("https://eif-research.feit.uts.edu.au/api/csv/?rFromDate=2022-08-01T01%3A00&rToDate=2022-08-31T21%3A00&rFamily=people_sh&rSensor=CB11.PC02.16.JonesStEast&rSubSensor=CB11.02.JonesSt+In","csv");
+  //Broadway
+  people2Broadway=loadTable("https://eif-research.feit.uts.edu.au/api/csv/?rFromDate=2022-08-01T01%3A00&rToDate=2022-08-31T21%3A00&rFamily=people_sh&rSensor=CB11.PC02.14.Broadway&rSubSensor=CB11.02.Broadway.East+In","csv");
+  //West
+  people0West=loadTable("https://eif-research.feit.uts.edu.au/api/csv/?rFromDate=2022-08-01T01%3A00&rToDate=2022-08-31T21%3A00&rFamily=people_sh&rSensor=CB11.PC00.06.West&rSubSensor=CB11.00.Wattle+In","csv");
+  //ST
+  people0ST=loadTable("https://eif-research.feit.uts.edu.au/api/csv/?rFromDate=2022-08-01T01%3A00&rToDate=2022-08-31T21%3A00&rFamily=people_sh&rSensor=CB11.PC00.08.ST12&rSubSensor=CB11.00.CR04.East+In","csv");
+  //CR
+  people0CR=loadTable("https://eif-research.feit.uts.edu.au/api/csv/?rFromDate=2022-08-01T01%3A00&rToDate=2022-08-31T21%3A00&rFamily=people_sh&rSensor=CB11.PC00.09.CR01&rSubSensor=CB11.00.CR04.West+In","csv");
+  
+  
+  //load sound files
+  crowd = new SoundFile(this, "people.wav");
+  crowd.loop();
+}
+
+void draw(){
+  frameRate(1);
+  
+  //find people counter in 2Jones
+  if(pplData<people2Jones.getRowCount()){
+   people$=people2Jones.getInt(pplData,1);
+   pplData++;
+  }
+  
+  //find people in 2Broadway
+  if(pplData<people2Broadway.getRowCount()){
+   people$=people2Broadway.getInt(pplData,1);
+   pplData++;
+  }
+  
+  //find people in 0West
+  if(pplData<people0West.getRowCount()){
+   people$=people0West.getInt(pplData,1);
+   pplData++;
+  }
+  
+  //find people in 0ST
+  if(pplData<people0ST.getRowCount()){
+   people$=people0ST.getInt(pplData,1);
+   pplData++;
+  }
+  
+  //find people in 0CR
+  if(pplData<people0CR.getRowCount()){
+   people$=people0CR.getInt(pplData,1);
+   pplData++;
+  }
+  
+  //once the data runs out, loop
+  else if (pplData==people2Jones.getRowCount()){
+   pplData=0; 
+  }
+  
+  //amplitude of crowd sound is based on the data
+  float amplitude=map(people$,0,50,0.1,1.0);
+  crowd.amp(amplitude);
+}
